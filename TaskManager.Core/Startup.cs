@@ -10,14 +10,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TaskManager.Data.Registries;
 
 namespace TaskManager.Core
 {
     public class Startup
     {
+        private static Startup instance;
+        public static Startup Instance => instance;
+
+        public IDataRegistry DataRegistry { get; }
+
         public Startup(IConfiguration configuration)
         {
+            instance = this;
             Configuration = configuration;
+
+            DataRegistry = Data.Util.CreateDefaultDataRegistry();
         }
 
         public IConfiguration Configuration { get; }
