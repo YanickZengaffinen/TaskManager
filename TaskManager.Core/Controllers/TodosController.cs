@@ -2,10 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Base;
-using TaskManager.Data.Projects;
 using TaskManager.Data.Registries;
 using TaskManager.Data.Todos;
-using TaskManager.Storage.Projects;
 using TaskManager.Storage.Registries;
 using TaskManager.Storage.Todos;
 
@@ -15,29 +13,28 @@ namespace TaskManager.Core.Controllers
     [ApiController]
     //[AutoValidateAntiforgeryToken]
     //[Authorize]
-    public class ProjectsController : ControllerBase
+    public class TodosController : ControllerBase
     {
-        protected IProjectStorage Storage => MasterRegistry.Get<IStorageRegistry>()
-            .GetStorage<IProject>() as IProjectStorage;
-
-        protected ITodoStorage TodoStorage => MasterRegistry.Get<IStorageRegistry>()
+        private ITodoStorage Storage => MasterRegistry.Get<IStorageRegistry>()
             .GetStorage<ITodo>() as ITodoStorage;
+
+        private IDataRegistry DataRegistry => MasterRegistry.Get<IDataRegistry>();
 
         //Create
         [HttpPost]
         [Route("create")]
-        public async Task<IProject> Create([FromBody] Project template)
+        public async Task<ITodo> Create([FromBody] Todo template)
         {
             return Storage.Create(template);
         }
 
         [HttpGet]
         [Route("create")]
-        public async Task<IProject> Create(string name, string description)
+        public async Task<ITodo> Create(string title, string description)
         {
-            var template = MasterRegistry.Get<IDataRegistry>().CreateNew<IProject>();
+            var template = DataRegistry.CreateNew<ITodo>();
 
-            template.Name = name;
+            template.Title = title;
             template.Description = description;
 
             return Storage.Create(template);
@@ -45,16 +42,16 @@ namespace TaskManager.Core.Controllers
 
         //Read
         [HttpGet]
-        public async Task<IEnumerable<IProject>> Get()
+        public async Task<IEnumerable<ITodo>> Get()
         {
             return Storage.Read();
         }
 
         [HttpGet]
-        [Route("{id:long}")]
-        public async Task<IProject> Get([FromRoute] long id)
+        [Route("{id:long}/get")]
+        public async Task<ITodo> Get([FromRoute] long id)
         {
-            if (Storage.TryGetById(id, out IProject project))
+            if (Storage.TryGetById(id, out ITodo project))
             {
                 return project;
             }
@@ -62,19 +59,12 @@ namespace TaskManager.Core.Controllers
             return null;
         }
 
-        [HttpGet]
-        [Route("{id:long}/todos")]
-        public async Task<IEnumerable<ITodo>> GetTodos([FromRoute] long id)
-        {
-            return TodoStorage.GetTodosForProject(id);
-        }
-
         //Update
         [HttpPost]
         [Route("{id:long}/update")]
-        public async Task Update([FromRoute] long id, [FromBody] Project template)
+        public async Task Update([FromRoute] long id, [FromBody] Todo template)
         {
-            Storage.Update(template.CloneUsingId(id) as IProject);
+            Storage.Update(template.CloneUsingId(id) as ITodo);
         }
 
 

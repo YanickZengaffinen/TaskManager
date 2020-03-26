@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using TaskManager.Data.Projects;
+using TaskManager.Data.Todos;
+using TaskManager.Storage.Storage;
 
 namespace TaskManager.Storage.Projects
 {
-    public interface IProjectStorage : IStorage<IProject>
+    public interface IProjectStorage : IDataStorage<IProject>
     {
-        IEnumerable<IProject> GetAll();
-
-        IProject Create(IProject template);
-
-        bool TryGetById(long id, out IProject project);
-
-        void Update();
-
-        void Delete(long id);
     }
 }

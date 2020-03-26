@@ -5,6 +5,7 @@
         public long Id { get; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public long? ProjectId { get; set; }
 
         public Todo(long id)
         {
@@ -15,6 +16,7 @@
         {
             return new Todo(id)
             {
+                ProjectId = ProjectId,
                 Title = Title,
                 Description = Description
             };

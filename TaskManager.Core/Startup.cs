@@ -1,51 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using TaskManager.Base;
 using TaskManager.Data.Projects;
-using TaskManager.Data.Registries;
 using TaskManager.Storage.JSON;
 using TaskManager.Storage.Projects;
-using TaskManager.Storage.Registries;
 
 namespace TaskManager.Core
 {
     public class Startup
     {
-        public static Startup Instance { get; private set; }
-
-        public IDataRegistry DataRegistry { get; } //not clear if even used yet
-
-        public IStorageRegistry StorageRegistry { get; }
-
         public Startup(IConfiguration configuration)
         {
-            Instance = this;
             Configuration = configuration;
 
-            DataRegistry = Data.DataModule.CreateDefaultDataRegistry();
-            StorageRegistry = JsonStorageModule.CreateDefaultJsonStorageRegistry();
-            var projectStorage = StorageRegistry.GetStorage<IProject>() as IProjectStorage;
+            //setup registries
+            var dataRegistry = Data.DataModule.CreateDefaultDataRegistry();
+            var storageRegistry = JsonStorageModule.CreateDefaultJsonStorageRegistry();
 
-            for(int i = 0; i < 10; i++)
+            //register all custom implementations
+
+            //register all registries to master
+            MasterRegistry.Instance.Register(storageRegistry);
+            MasterRegistry.Instance.Register(dataRegistry);
+
+            //temp: populate storages
+            var projectStorage = storageRegistry.GetStorage<IProject>() as IProjectStorage;
+
+            for (int i = 0; i < 10; i++)
             {
-                var projectTemplate = DataRegistry.CreateNew<IProject>();
+                var projectTemplate = dataRegistry.CreateNew<IProject>();
                 projectTemplate.Name = "Hello" + i;
                 projectTemplate.Description = "World" + i;
 
                 projectStorage.Create(projectTemplate);
             }
-
-            //register all custom implementations
         }
 
         public IConfiguration Configuration { get; }
