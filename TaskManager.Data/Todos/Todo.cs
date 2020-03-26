@@ -10,5 +10,14 @@
         {
             this.Id = id;
         }
+
+        public IData CloneUsingId(long id)
+        {
+            return new Todo(id)
+            {
+                Title = Title,
+                Description = Description
+            };
+        }
     }
 }

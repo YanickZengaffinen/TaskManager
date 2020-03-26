@@ -10,23 +10,42 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using TaskManager.Data.Projects;
 using TaskManager.Data.Registries;
+using TaskManager.Storage.JSON;
+using TaskManager.Storage.Projects;
+using TaskManager.Storage.Registries;
 
 namespace TaskManager.Core
 {
     public class Startup
     {
-        private static Startup instance;
-        public static Startup Instance => instance;
+        public static Startup Instance { get; private set; }
 
-        public IDataRegistry DataRegistry { get; }
+        public IDataRegistry DataRegistry { get; } //not clear if even used yet
+
+        public IStorageRegistry StorageRegistry { get; }
 
         public Startup(IConfiguration configuration)
         {
-            instance = this;
+            Instance = this;
             Configuration = configuration;
 
-            DataRegistry = Data.Util.CreateDefaultDataRegistry();
+            DataRegistry = Data.DataModule.CreateDefaultDataRegistry();
+            StorageRegistry = JsonStorageModule.CreateDefaultJsonStorageRegistry();
+            var projectStorage = StorageRegistry.GetStorage<IProject>() as IProjectStorage;
+
+            for(int i = 0; i < 10; i++)
+            {
+                var projectTemplate = DataRegistry.CreateNew<IProject>();
+                projectTemplate.Name = "Hello" + i;
+                projectTemplate.Description = "World" + i;
+
+                projectStorage.Create(projectTemplate);
+            }
+
+            //register all custom implementations
         }
 
         public IConfiguration Configuration { get; }
@@ -35,6 +54,10 @@ namespace TaskManager.Core
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskManager API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +66,12 @@ namespace TaskManager.Core
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //Swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskManager API v1");
+                });
             }
             else
             {

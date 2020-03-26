@@ -8,7 +8,7 @@ using TaskManager.Data.Todos;
 
 namespace TaskManager.Data
 {
-    public static class Util
+    public static class DataModule
     {
         /// <summary>
         /// Registers all default data types... can be overriden later

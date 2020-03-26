@@ -1,15 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TaskManager.Storage
 {
-    public interface IStorage<T> : IDisposable
+    /// <summary>
+    /// Tagging interface
+    /// </summary>
+    public interface IStorage { }
+
+    /// <summary>
+    /// Storage access interface
+    /// </summary>
+    /// <typeparam name="T">The type of an entry</typeparam>
+    public interface IStorage<T> : IStorage, IDisposable
     {
-        IStorage<T> Connect();
+        T Create();
 
-        T Read();
+        IEnumerable<T> Read();
 
-        bool Update(T data);
+        void Update(T entry);
+
+        void Delete(T entry);
     }
 }
