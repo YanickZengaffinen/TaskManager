@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  taskmanager.core:
+    image: ${DOCKER_REGISTRY-}taskmanagercore
+    build:
+      context: .
+      dockerfile: TaskManager.Core/Dockerfile

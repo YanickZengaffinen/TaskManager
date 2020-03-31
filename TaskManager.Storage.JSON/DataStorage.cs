@@ -1,28 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaskManager.Base;
 using TaskManager.Data;
+using TaskManager.Data.Registries;
 using TaskManager.Storage.Storage;
 
 namespace TaskManager.Storage.JSON
 {
     class DataStorage<T> : IDataStorage<T> where T : IData
     {
-        protected readonly Dictionary<long, T> datas = new Dictionary<long, T>();
+        protected string Path { get; }
+
+        protected Dictionary<long, T> datas = new Dictionary<long, T>();
+
+        protected DataStorage(string path)
+        {
+            Path = path;
+
+            //initially load the storage
+            Load();
+        }
 
         public T Create(T template)
         {
             long id = GetNextDataId();
             var inst = (T)template.CloneUsingId(id);
             datas.Add(id, inst);
+
+            Save();
             return inst;
         }
 
         public T Create()
         {
             long id = GetNextDataId();
-            //var inst = DataRegistry...
-            throw new NotImplementedException();
+            var inst = MasterRegistry.Get<IDataRegistry>().CreateNew<T>();
+
+            Save();
+            return inst;
         }
 
         private long GetNextDataId()
@@ -33,12 +49,14 @@ namespace TaskManager.Storage.JSON
         public void Delete(long id)
         {
             datas.Remove(id);
+            Save();
         }
 
         public void Delete(T entry)
         {
             //TODO: log warning if not actually equal
             Delete(entry.Id);
+            Save();
         }
 
         public void Dispose()
@@ -70,7 +88,16 @@ namespace TaskManager.Storage.JSON
 
         public void Save()
         {
-            //write to file
+            JsonUtil.SaveToFile<IEnumerable<T>>(Path, datas.Values);
+        }
+
+        public void Load()
+        {
+            var dataValues = JsonUtil.ReadFromFile<IEnumerable<T>>(Path + "/datas.json");
+            if(dataValues != null && dataValues.Count() > 0)
+            {
+                datas = dataValues.ToDictionary(x => x.Id);
+            }
         }
     }
 }

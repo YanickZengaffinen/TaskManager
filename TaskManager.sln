@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Storage", "Task
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Base", "TaskManager.Base\TaskManager.Base.csproj", "{CA6B5380-BE84-404D-BDD3-98B5CB247686}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Storage.JSON", "TaskManager.Storage.JSON\TaskManager.Storage.JSON.csproj", "{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Storage.JSON", "TaskManager.Storage.JSON\TaskManager.Storage.JSON.csproj", "{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

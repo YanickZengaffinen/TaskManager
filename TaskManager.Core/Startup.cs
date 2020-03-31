@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
 using TaskManager.Base;
 using TaskManager.Data.Projects;
 using TaskManager.Storage.JSON;
@@ -13,13 +15,17 @@ namespace TaskManager.Core
 {
     public class Startup
     {
+        private const String FilePath = "E:/storage";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
 
             //setup registries
-            var dataRegistry = Data.DataModule.CreateDefaultDataRegistry();
-            var storageRegistry = JsonStorageModule.CreateDefaultJsonStorageRegistry();
+             var dataRegistry = Data.DataModule.CreateDefaultDataRegistry();
+
+            var storageRegistry = JsonStorageModule.CreateDefaultJsonStorageRegistry(FilePath);
+
 
             //register all custom implementations
 
