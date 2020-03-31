@@ -2,6 +2,11 @@
 {
     public interface ITodo : IData
     {
+        /// <summary>
+        /// The project this todo belongs to
+        /// </summary>
+        long? ProjectId { get; set; }
+
         string Title { get; set; }
         string Description { get; set; }
     }

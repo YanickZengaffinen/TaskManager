@@ -5,11 +5,15 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Core", "TaskManager.Core\TaskManager.Core.csproj", "{B4398840-1455-48DD-97F3-97EDC9DBFB8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Client", "TaskManager.Client\TaskManager.Client.csproj", "{340A3914-9254-4DF8-B63E-EB710CA66E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Client", "TaskManager.Client\TaskManager.Client.csproj", "{340A3914-9254-4DF8-B63E-EB710CA66E03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Data", "TaskManager.Data\TaskManager.Data.csproj", "{BF836F30-C3C3-4FBB-9AD9-EF4D4C096AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Data", "TaskManager.Data\TaskManager.Data.csproj", "{BF836F30-C3C3-4FBB-9AD9-EF4D4C096AE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Storage", "TaskManager.Storage\TaskManager.Storage.csproj", "{4CBBEB65-B6CF-475E-9AC8-1E4741C608B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Storage", "TaskManager.Storage\TaskManager.Storage.csproj", "{4CBBEB65-B6CF-475E-9AC8-1E4741C608B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Base", "TaskManager.Base\TaskManager.Base.csproj", "{CA6B5380-BE84-404D-BDD3-98B5CB247686}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Storage.JSON", "TaskManager.Storage.JSON\TaskManager.Storage.JSON.csproj", "{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{4CBBEB65-B6CF-475E-9AC8-1E4741C608B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CBBEB65-B6CF-475E-9AC8-1E4741C608B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CBBEB65-B6CF-475E-9AC8-1E4741C608B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6B5380-BE84-404D-BDD3-98B5CB247686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6B5380-BE84-404D-BDD3-98B5CB247686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6B5380-BE84-404D-BDD3-98B5CB247686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6B5380-BE84-404D-BDD3-98B5CB247686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341336A4-24BD-4EB2-B39E-B3EE7EE0DE19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

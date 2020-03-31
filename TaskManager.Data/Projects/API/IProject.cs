@@ -2,7 +2,7 @@
 {
     public interface IProject : IData
     {
-        string Name { get; }
-        string Description { get; }
+        string Name { get; set; }
+        string Description { get; set; }
     }
 }
