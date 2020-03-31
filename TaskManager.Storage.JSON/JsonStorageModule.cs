@@ -13,10 +13,12 @@ namespace TaskManager.Storage.JSON
 
             //Projects
             var projectStorage = new ProjectStorage(path + "/" + ProjectsPath + "/data.json");
+            projectStorage.Load();
             storageRegistry.Register(projectStorage);
 
             //Todos
             var todoStorage = new TodoStorage(path + "/" + TodosPath + "/data.json");
+            todoStorage.Load();
             storageRegistry.Register(todoStorage);
 
             return storageRegistry;

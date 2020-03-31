@@ -91,9 +91,9 @@ namespace TaskManager.Storage.JSON
             JsonUtil.SaveToFile<IEnumerable<T>>(Path, datas.Values);
         }
 
-        public void Load()
+        public virtual void Load()
         {
-            var dataValues = JsonUtil.ReadFromFile<IEnumerable<T>>(Path + "/datas.json");
+            var dataValues = JsonUtil.ReadFromFile<IEnumerable<T>>(Path);
             if(dataValues != null && dataValues.Count() > 0)
             {
                 datas = dataValues.ToDictionary(x => x.Id);

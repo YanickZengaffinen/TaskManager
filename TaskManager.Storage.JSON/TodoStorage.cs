@@ -13,5 +13,15 @@ namespace TaskManager.Storage.JSON
         {
             return datas.Values.Where(x => x.ProjectId == projectId).ToList();
         }
+
+        public override void Load()
+        {
+            //TODO: give json deserializer type for interface
+            var dataValues = JsonUtil.ReadFromFile<List<Todo>>(Path);
+            if (dataValues != null && dataValues.Count() > 0)
+            {
+                datas = dataValues.Cast<ITodo>().ToDictionary(x => x.Id);
+            }
+        }
     }
 }

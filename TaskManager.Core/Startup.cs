@@ -15,7 +15,7 @@ namespace TaskManager.Core
 {
     public class Startup
     {
-        private const String FilePath = "E:/storage";
+        private const string FilePath = "E:/storage";
 
         public Startup(IConfiguration configuration)
         {
@@ -34,16 +34,16 @@ namespace TaskManager.Core
             MasterRegistry.Instance.Register(dataRegistry);
 
             //temp: populate storages
-            var projectStorage = storageRegistry.GetStorage<IProject>() as IProjectStorage;
+            //var projectStorage = storageRegistry.GetStorage<IProject>() as IProjectStorage;
 
-            for (int i = 0; i < 10; i++)
-            {
-                var projectTemplate = dataRegistry.CreateNew<IProject>();
-                projectTemplate.Name = "Hello" + i;
-                projectTemplate.Description = "World" + i;
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    var projectTemplate = dataRegistry.CreateNew<IProject>();
+            //    projectTemplate.Name = "Hello" + i;
+            //    projectTemplate.Description = "World" + i;
 
-                projectStorage.Create(projectTemplate);
-            }
+            //    projectStorage.Create(projectTemplate);
+            //}
         }
 
         public IConfiguration Configuration { get; }
