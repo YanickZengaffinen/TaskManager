@@ -11,6 +11,7 @@ namespace TaskManager.Storage.JSON
 
         public override void Load()
         {
+            //TODO: give json deserializer type info for IProject interface
             var dataValues = JsonUtil.ReadFromFile<List<Project>>(Path);
             if (dataValues != null && dataValues.Count() > 0)
             {

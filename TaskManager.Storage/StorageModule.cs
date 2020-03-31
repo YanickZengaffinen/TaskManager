@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TaskManager.Storage.Registries;
+﻿using TaskManager.Storage.Registries;
 
 namespace TaskManager.Storage
 {
@@ -11,6 +8,5 @@ namespace TaskManager.Storage
         {
             return new StorageRegistry();
         }
-
     }
 }

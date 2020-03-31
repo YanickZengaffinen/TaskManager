@@ -2,6 +2,9 @@
 {
     public interface IData
     {
+        /// <summary>
+        /// The unique id of the data element
+        /// </summary>
         long Id { get; }
 
         /// <summary>

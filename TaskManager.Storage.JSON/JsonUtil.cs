@@ -5,6 +5,10 @@ namespace TaskManager.Storage.JSON
 {
     public static class JsonUtil
     {
+        /// <summary>
+        /// Serializes some data into json and writes it to the file at the specified location.
+        /// Generates a new file if it does not already exist. Uses Truncate mode.
+        /// </summary>
         public static void SaveToFile<T>(string path, T data)
         {
             if(!Directory.Exists(path))
@@ -25,6 +29,9 @@ namespace TaskManager.Storage.JSON
             }
         }
 
+        /// <summary>
+        /// Read all content of a file located at the specified path and try to deserialize its content.
+        /// </summary>
         public static T ReadFromFile<T>(string path)
         {
             if(File.Exists(path))

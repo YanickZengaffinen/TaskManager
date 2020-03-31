@@ -1,5 +1,6 @@
 ﻿namespace TaskManager.Data.Todos
 {
+    //TODO: remove public modifier as external access should be forbidden
     public class Todo : ITodo
     {
         public long Id { get; }

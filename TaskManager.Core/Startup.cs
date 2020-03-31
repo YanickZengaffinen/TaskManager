@@ -4,12 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
 using TaskManager.Base;
-using TaskManager.Data.Projects;
 using TaskManager.Storage.JSON;
-using TaskManager.Storage.Projects;
 
 namespace TaskManager.Core
 {
@@ -32,18 +28,6 @@ namespace TaskManager.Core
             //register all registries to master
             MasterRegistry.Instance.Register(storageRegistry);
             MasterRegistry.Instance.Register(dataRegistry);
-
-            //temp: populate storages
-            //var projectStorage = storageRegistry.GetStorage<IProject>() as IProjectStorage;
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    var projectTemplate = dataRegistry.CreateNew<IProject>();
-            //    projectTemplate.Name = "Hello" + i;
-            //    projectTemplate.Description = "World" + i;
-
-            //    projectStorage.Create(projectTemplate);
-            //}
         }
 
         public IConfiguration Configuration { get; }

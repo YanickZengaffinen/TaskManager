@@ -16,7 +16,7 @@ namespace TaskManager.Storage.JSON
 
         public override void Load()
         {
-            //TODO: give json deserializer type for interface
+            //TODO: give json deserializer type info for ITodo interface
             var dataValues = JsonUtil.ReadFromFile<List<Todo>>(Path);
             if (dataValues != null && dataValues.Count() > 0)
             {

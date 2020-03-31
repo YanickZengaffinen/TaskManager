@@ -34,8 +34,8 @@ namespace TaskManager.Storage.JSON
 
         public T Create()
         {
-            long id = GetNextDataId();
             var inst = MasterRegistry.Get<IDataRegistry>().CreateNew<T>();
+            Create(inst);
 
             Save();
             return inst;

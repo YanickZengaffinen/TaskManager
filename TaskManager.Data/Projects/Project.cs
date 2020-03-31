@@ -1,5 +1,6 @@
 ﻿namespace TaskManager.Data.Projects
 {
+    //TODO: remove public modifier as external access should be forbidden
     public class Project : IProject
     {
         public long Id { get; }
