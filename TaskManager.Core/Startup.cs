@@ -12,6 +12,7 @@ namespace TaskManager.Core
     public class Startup
     {
         private const string FilePath = "E:/storage";
+        private readonly string CorsPolicyName = "_cors";
 
         public Startup(IConfiguration configuration)
         {
@@ -37,6 +38,18 @@ namespace TaskManager.Core
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicyName,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.AllowCredentials();
+                        builder.AllowAnyMethod();
+                    });
+            });
+
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskManager API", Version = "v1" });
             });
@@ -60,11 +73,7 @@ namespace TaskManager.Core
                 app.UseHsts();
             }
 
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+            app.UseCors(CorsPolicyName);
 
             app.UseHttpsRedirection();
             app.UseMvc();
