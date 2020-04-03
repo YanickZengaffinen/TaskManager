@@ -30,12 +30,13 @@ namespace TaskManager.Core.Controllers
 
         [HttpGet]
         [Route("create")]
-        public async Task<ITodo> Create(string title, string description)
+        public async Task<ITodo> Create(string title, string description, long? projectId)
         {
             var template = DataRegistry.CreateNew<ITodo>();
 
             template.Title = title;
             template.Description = description;
+            template.ProjectId = projectId;
 
             return Storage.Create(template);
         }
@@ -48,7 +49,7 @@ namespace TaskManager.Core.Controllers
         }
 
         [HttpGet]
-        [Route("{id:long}/get")]
+        [Route("{id:long}")]
         public async Task<ITodo> Get([FromRoute] long id)
         {
             if (Storage.TryGetById(id, out ITodo project))
