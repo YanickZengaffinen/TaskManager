@@ -26,3 +26,7 @@ code {
   height: 3em;
   width: 75%;
 }
+
+.list-group-hover .list-group-item:hover {
+  background-color: #f5f5f5;
+}

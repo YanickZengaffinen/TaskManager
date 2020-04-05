@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { DataEdit } from '../api/DataEdit';
+import { getTodo, deleteTodo, updateTodo } from './TodoAPI';
 
 export class TodoEdit extends Component {
   displayName = TodoEdit.name
@@ -10,6 +12,7 @@ export class TodoEdit extends Component {
     this.state = { 
       projectId: props.match.params.projectId,
       todoId: props.match.params.todoId,
+      isNew: new URLSearchParams(this.props.location.search).get("isNew"),
       error: null,
       isLoaded: false,
       todo: null
@@ -18,10 +21,8 @@ export class TodoEdit extends Component {
 
   componentDidMount()
   {
-    fetch("https://localhost:5001/api/todos/" + this.state.todoId)
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
+    getTodo(this.state.todoId, 
+      (result) => {
         this.setState({
           isLoaded: true,
           todo: result
@@ -37,37 +38,62 @@ export class TodoEdit extends Component {
 
   onTitleChanged = (e) =>
   {
-    this.setState({
-      ...this.state,
-      todo:
-      {
-        ...this.state.todo,
-        title: e.target.value
-      }
-    });
+    this.setTodo({...this.state.todo, title: e.target.value});
   }
 
   onDescriptionChanged = (e) =>
   {
+    this.setTodo({...this.state.todo, description: e.target.value});
+  }
+
+  setTodo(todo)
+  {
     this.setState({
       ...this.state,
-      todo:
-      {
-        ...this.state.todo,
-        description: e.target.value
-      }
+      todo: todo
     });
   }
 
-  save = () =>
+  onSave = () =>
   {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.state.todo)
-    };
-    fetch("https://localhost:5001/api/todos/" + this.state.todoId + "/update", requestOptions)
-        .then(e => this.props.history.push("/projects/"+this.state.projectId+"/todos"));
+    updateTodo(this.state.todo, 
+      (result) => {
+        this.goToTodos();
+      },
+      (error) => console.log(error));
+  }
+
+  onAbort = () =>
+  {
+    if(this.state.isNew)
+    {
+      deleteTodo(this.state.todoId,
+        (result) => this.goToTodos(),
+        (error) => console.log(error));
+    }
+    else{
+      this.goToTodos();
+    }
+  }
+
+  goToTodos(){
+    this.props.history.push("/projects/"+this.state.projectId+"/todos");
+  }
+
+  renderTodo = (todo) =>
+  {
+    return(
+    <Form>
+      <Form.Group>
+        <Form.Label>Title</Form.Label>
+        <Form.Control type="text" defaultValue={todo.title} onChange={this.onTitleChanged} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Description</Form.Label>
+        <Form.Control as="textarea" rows="3" defaultValue={todo.description} onChange={this.onDescriptionChanged} />
+      </Form.Group>
+    </Form>
+    );
   }
 
   render() {
@@ -80,25 +106,8 @@ export class TodoEdit extends Component {
     }
     else {
       return (
-        <Container>
-          <h1>{todo.title || "Todo"}</h1>
-          <Form>
-            <Form.Group>
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" defaultValue={todo.title} onChange={this.onTitleChanged} />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" rows="3" defaultValue={todo.description} onChange={this.onDescriptionChanged} />
-            </Form.Group>
-          </Form>
-
-          <footer className="footer mb-1">
-            <Container fluid>
-              <button className="btn btn-primary float-right mx-1" onClick={this.save}>Save</button>
-            </Container>
-          </footer>
-        </Container>
+        <DataEdit title={todo.title || "Todo"} render={() => this.renderTodo(todo)}
+          onSave={this.onSave} onAbort={this.onAbort} />
       );
     }
   }
