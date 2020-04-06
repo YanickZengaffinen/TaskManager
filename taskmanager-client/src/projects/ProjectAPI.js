@@ -32,11 +32,17 @@ export function getProject(projectId, callback, callbackError)
 
 export function createProject(callback, callbackError)
 {
-    fetch(apiUrl + "/projects/create")
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}) //will instantiate default object
+    };
+
+    fetch(apiUrl + "/projects", requestOptions)
     .then(res => res.json())
-    .then((project) => {
+    .then((result) => {
         if(callback)
-            callback(project);
+            callback(result);
     },
     (error) => {
         if(callbackError)
@@ -47,12 +53,12 @@ export function createProject(callback, callbackError)
 export function updateProject(project, callback, callbackError)
 {
     const requestOptions = {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(project)
-      };
+    };
 
-    fetch(apiUrl + "/projects/" + project.id + "/update", requestOptions)
+    fetch(apiUrl + "/projects/" + project.id, requestOptions)
     //does not return json
     .then((result) => {
         if(callback)
@@ -66,7 +72,12 @@ export function updateProject(project, callback, callbackError)
 
 export function deleteProject(projectId, callback, callbackError)
 {
-    fetch(apiUrl + "/projects/" + projectId + "/delete")
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(apiUrl + "/projects/" + projectId, requestOptions)
     //does not return json
     .then((result) => {
         if(callback)

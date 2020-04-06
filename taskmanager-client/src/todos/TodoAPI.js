@@ -32,11 +32,17 @@ export function getTodo(todoId, callback, callbackError)
 
 export function createTodo(projectId, callback, callbackError)
 {
-    fetch(apiUrl + "/todos/create?projectId="+projectId)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({projectId: projectId})
+    };
+
+    fetch(apiUrl + "/todos", requestOptions)
     .then(res => res.json())
-    .then((project) => {
+    .then((result) => {
         if(callback)
-            callback(project);
+            callback(result);
     },
     (error) => {
         if(callbackError)
@@ -47,12 +53,12 @@ export function createTodo(projectId, callback, callbackError)
 export function updateTodo(todo, callback, callbackError)
 {
     const requestOptions = {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
-      };
+    };
 
-    fetch(apiUrl + "/todos/" + todo.id + "/update", requestOptions)
+    fetch(apiUrl + "/todos/" + todo.id, requestOptions)
     //does not return json
     .then((result) => {
         if(callback)
@@ -66,7 +72,12 @@ export function updateTodo(todo, callback, callbackError)
 
 export function deleteTodo(todoId, callback, callbackError)
 {
-    fetch(apiUrl + "/todos/" + todoId + "/delete")
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(apiUrl + "/todos/" + todoId, requestOptions)
     //does not return json
     .then((result) => {
         if(callback)
