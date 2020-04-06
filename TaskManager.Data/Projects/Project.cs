@@ -9,6 +9,8 @@
 
         public string Description { get; set; }
 
+        public bool Active { get; set; } = true;
+
         public Project(long id)
         {
             this.Id = id;
@@ -18,7 +20,8 @@
         {
             return new Project(id) {
                 Name = Name,
-                Description = Description
+                Description = Description,
+                Active = Active
             };
         }
     }

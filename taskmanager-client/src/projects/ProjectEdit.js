@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import { getProject, updateProject, deleteProject } from './ProjectAPI';
 import { DataEdit } from '../api/DataEdit';
+import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 
 export class ProjectEdit extends Component {
   displayName = ProjectEdit.name
@@ -45,6 +46,11 @@ export class ProjectEdit extends Component {
     this.setProject({...this.state.project, description: e.target.value });
   }
 
+  onProjectActiveChanged = (active) =>
+  {
+    this.setProject({...this.state.project, active: active });
+  }
+
   setProject(project)
   {
     this.setState({
@@ -84,16 +90,28 @@ export class ProjectEdit extends Component {
   renderProject(project)
   {
     return (
-    <Form>
-      <Form.Group>
-        <Form.Label>Name</Form.Label>
-        <Form.Control type="text" defaultValue={project.name} onChange={this.onProjectNameChanged} />
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Description</Form.Label>
-        <Form.Control as="textarea" rows="3" defaultValue={project.description} onChange={this.onProjectDescriptionChanged} />
-      </Form.Group>
-    </Form>
+      <div>
+        <div className="form-group-item">
+          <BootstrapSwitchButton
+            checked={this.state.project.active}
+            onlabel='Active'
+            offlabel='Inactive'
+            onChange={this.onProjectActiveChanged}
+            width={100}
+          />
+        </div>
+      
+      <Form>
+        <Form.Group>
+          <Form.Label>Name</Form.Label>
+          <Form.Control type="text" defaultValue={project.name} onChange={this.onProjectNameChanged} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" rows="3" defaultValue={project.description} onChange={this.onProjectDescriptionChanged} />
+        </Form.Group>
+      </Form>
+      </div>
     );
   }
 
