@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { DataOverview } from '../api/DataOverview';
+import { getProjects, createProject, deleteProject } from './ProjectAPI';
 
 export class ProjectsOverview extends Component {
   displayName = ProjectsOverview.name
@@ -16,44 +17,48 @@ export class ProjectsOverview extends Component {
 
   componentDidMount()
   {
-    fetch("https://localhost:5001/api/projects")
-      .then(res => res.json())
-      .then((result) => {
-        this.setState({
-          isLoaded: true,
-          projects: result
-        });
-      },
+    getProjects(
+      (projects) => this.setState({
+        isLoaded: true,
+        projects: projects
+      }),
       (error) => {
         this.setState({
           isLoaded: true,
           error
-        });
-      });
+        })
+      }
+    );    
   }
 
   //creates a new project
   onCreate = () =>
   {
-    fetch("https://localhost:5001/api/projects/create")
-      .then(res => res.json())
-      .then((project) => {
-        this.onEdit(project.id);
+    createProject(
+      (project) => {
+        this.onEdit(project.id, true);
       },
       (error) => console.log(error));
   }
 
   //edit a project
-  onEdit = (id) =>
+  onEdit = (id, isNew) =>
   {
-    this.props.history.push("/projects/" + id + "/edit");
+    var uri = "/projects/" + id + "/edit";
+    
+    if(isNew)
+    {
+      uri += "?isNew="+isNew;
+    }
+
+    this.props.history.push(uri);
   }
 
   //delete a project
   onDelete = (id) =>
   {
-    fetch("https://localhost:5001/api/projects/" + id + "/delete")
-      .then((result) => {
+    deleteProject(id, 
+      (result) => {
         this.setState({
           ...this.state, 
           projects: this.state.projects.filter(x => x.id !== id)

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { DataOverview } from '../api/DataOverview';
+import { getTodosOfProject, createTodo, deleteTodo } from './TodoAPI';
 
 export class TodosOverview extends Component {
   displayName = TodosOverview.name
@@ -8,18 +9,17 @@ export class TodosOverview extends Component {
   constructor(props) {
     super(props);
     this.state = { 
+      projectId: props.match.params.projectId,
       error: null,
       isLoaded: false,
-      projectId: props.match.params.projectId,
       todos: []
     };
   }
 
   componentDidMount()
   {
-    fetch("https://localhost:5001/api/projects/" + this.state.projectId + "/todos")
-      .then(res => res.json())
-      .then((result) => {
+    getTodosOfProject(this.state.projectId, 
+      (result) => {
         this.setState({
           ...this.state,
           isLoaded: true,
@@ -38,23 +38,31 @@ export class TodosOverview extends Component {
   //creates a new todo
   onCreate = () =>
   {
-    //TODO: requires optimization (merge into one request)
-    fetch("https://localhost:5001/api/todos/create?projectId="+this.state.projectId)
-      .then(res => {console.log(res); return res.json()})
-      .then(todo => this.onEdit(todo.id));
+    createTodo(this.state.projectId,
+      (todo) => {
+        this.onEdit(todo.id, true);
+      },
+      (error) => console.log(error));
   }
 
   //edit a todo
-  onEdit = (id) =>
+  onEdit = (id, isNew) =>
   {
-    this.props.history.push("/projects/" + this.state.projectId + "/todos/" + id + "/edit");
+    var uri = "/projects/" + this.state.projectId + "/todos/" + id + "/edit";
+    
+    if(isNew)
+    {
+      uri += "?isNew="+isNew;
+    }
+
+    this.props.history.push(uri);
   }
 
   //delete a todo
   onDelete = (id) =>
   {
-    fetch("https://localhost:5001/api/todos/" + id + "/delete")
-      .then((result) => {
+    deleteTodo(id, 
+      (result) => {
         this.setState({
           ...this.state, 
           todos: this.state.todos.filter(x => x.id !== id)

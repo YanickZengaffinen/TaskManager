@@ -29,13 +29,13 @@ export class DataOverview extends Component {
     const { datas, onDataClicked, onCreate, onEdit, onDelete, render } = this.state;
     return (
         <div>
-          <ul className="list-group">
+          <ul className="list-group list-group-hover">
               {datas.map((data) => 
-                <li key={data.id} className="list-group-item" onClick={() => {console.log("top"); if(onDataClicked) onDataClicked(data.id)}}>
+                <li key={data.id} className="list-group-item" onClick={() => {if(onDataClicked) onDataClicked(data.id)}}>
                     <Container fluid>
                         {render(data)}
                         <FontAwesomeIcon className="icon float-right"
-                            icon={faTrash} onClick={e => {console.log("miau"); e.stopPropagation(); e.preventDefault(); onDelete(data.id)}} />
+                            icon={faTrash} onClick={e => {e.stopPropagation(); e.preventDefault(); onDelete(data.id)}} />
                         <FontAwesomeIcon className="icon float-right"
                             icon={faEdit} onClick={e => {console.log(e); e.stopPropagation(); e.preventDefault(); onEdit(data.id)}} />
                     </Container>

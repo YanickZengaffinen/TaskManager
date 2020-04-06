@@ -25,21 +25,8 @@ namespace TaskManager.Core.Controllers
 
         //Create
         [HttpPost]
-        [Route("create")]
         public async Task<IProject> Create([FromBody] Project template)
         {
-            return Storage.Create(template);
-        }
-
-        [HttpGet]
-        [Route("create")]
-        public async Task<IProject> Create(string name, string description)
-        {
-            var template = MasterRegistry.Get<IDataRegistry>().CreateNew<IProject>();
-
-            template.Name = name;
-            template.Description = description;
-
             return Storage.Create(template);
         }
 
@@ -70,8 +57,8 @@ namespace TaskManager.Core.Controllers
         }
 
         //Update
-        [HttpPost]
-        [Route("{id:long}/update")]
+        [HttpPut]
+        [Route("{id:long}")]
         public async Task Update([FromRoute] long id, [FromBody] Project template)
         {
             Storage.Update(template.CloneUsingId(id) as IProject);
@@ -79,8 +66,8 @@ namespace TaskManager.Core.Controllers
 
 
         //Delete
-        [HttpGet]
-        [Route("{id:long}/delete")]
+        [HttpDelete]
+        [Route("{id:long}")]
         public async Task Delete([FromRoute] long id)
         {
             Storage.Delete(id);

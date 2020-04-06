@@ -18,26 +18,10 @@ namespace TaskManager.Core.Controllers
         private ITodoStorage Storage => MasterRegistry.Get<IStorageRegistry>()
             .GetStorage<ITodo>() as ITodoStorage;
 
-        private IDataRegistry DataRegistry => MasterRegistry.Get<IDataRegistry>();
-
         //Create
         [HttpPost]
-        [Route("create")]
         public async Task<ITodo> Create([FromBody] Todo template)
         {
-            return Storage.Create(template);
-        }
-
-        [HttpGet]
-        [Route("create")]
-        public async Task<ITodo> Create(string title, string description, long? projectId)
-        {
-            var template = DataRegistry.CreateNew<ITodo>();
-
-            template.Title = title;
-            template.Description = description;
-            template.ProjectId = projectId;
-
             return Storage.Create(template);
         }
 
@@ -61,8 +45,8 @@ namespace TaskManager.Core.Controllers
         }
 
         //Update
-        [HttpPost]
-        [Route("{id:long}/update")]
+        [HttpPut]
+        [Route("{id:long}")]
         public async Task Update([FromRoute] long id, [FromBody] Todo template)
         {
             Storage.Update(template.CloneUsingId(id) as ITodo);
@@ -70,8 +54,8 @@ namespace TaskManager.Core.Controllers
 
 
         //Delete
-        [HttpGet]
-        [Route("{id:long}/delete")]
+        [HttpDelete]
+        [Route("{id:long}")]
         public async Task Delete([FromRoute] long id)
         {
             Storage.Delete(id);
