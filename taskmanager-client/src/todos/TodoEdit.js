@@ -4,7 +4,7 @@ import { DataEdit } from '../api/DataEdit';
 import { getTodo, deleteTodo, updateTodo } from './TodoAPI';
 import { DateTime } from 'react-datetime-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment'
 
 export class TodoEdit extends Component {
@@ -99,6 +99,7 @@ export class TodoEdit extends Component {
       <div className="form-inline">
         <DateTime pickerOptions={{format:"DD.MM.YYYY"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
         <DateTime pickerOptions={{format:"HH:mm"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
+        <FontAwesomeIcon className="ml-2" icon={faMinus} onClick={(e) => this.onDueDateChanged(null)} />
       </div>);
     }
     else{
