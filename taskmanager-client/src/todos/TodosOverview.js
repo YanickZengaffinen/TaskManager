@@ -103,7 +103,8 @@ export class TodosOverview extends Component {
         <Container>
           <h1>Todos</h1>
           <DataOverview datas={todos} onCreate={this.onCreate} 
-              onEdit={this.onEdit} onDelete={this.onDelete} render={this.renderTodo}/>
+              onEdit={this.onEdit} onDelete={this.onDelete} onDataClicked={this.onEdit}
+              render={this.renderTodo}/>
         </Container>
       );
     }
