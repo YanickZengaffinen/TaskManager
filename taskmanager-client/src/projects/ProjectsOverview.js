@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { DataOverview } from '../api/DataOverview';
 import { getProjects, createProject, deleteProject } from './ProjectAPI';
+import './ProjectsOverview.css';
 
 export class ProjectsOverview extends Component {
   displayName = ProjectsOverview.name
@@ -20,7 +21,7 @@ export class ProjectsOverview extends Component {
     getProjects(
       (projects) => this.setState({
         isLoaded: true,
-        projects: projects
+        projects: this.sortByActive(projects)
       }),
       (error) => {
         this.setState({
@@ -29,6 +30,34 @@ export class ProjectsOverview extends Component {
         })
       }
     );    
+  }
+
+  //sorts the projects by active, alphabet
+  sortByActive = (projects) =>
+  {
+    return projects.sort((a,b) => {
+      if(a.active)
+      {
+        if(b.active)
+        {
+          //compare alphabetically
+          return a.name.localeCompare(b.name);
+        }
+        else
+        {
+          return -1;
+        }
+      }
+      //a inactive
+      else if(b.active)
+      {
+        return 1;
+      }
+      else
+      {
+        return a.name.localeCompare(b.name);
+      }
+    });
   }
 
   //creates a new project
@@ -61,7 +90,7 @@ export class ProjectsOverview extends Component {
       (result) => {
         this.setState({
           ...this.state, 
-          projects: this.state.projects.filter(x => x.id !== id)
+          projects: this.sortByActive(this.state.projects.filter(x => x.id !== id))
         });
       },
       (error) => console.log(error));
@@ -74,12 +103,24 @@ export class ProjectsOverview extends Component {
 
   renderProject(project)
   {
-    return(
-      <div className="d-inline">
-        <label className="h3">{project.name}</label>
-        <pre className="text-secondary cut-text">{project.description}</pre>
-      </div>
-    );
+    if(project.active)
+    {
+      return(
+        <div className={"d-inline active"}>
+          <label className="h3">{project.name}</label>
+          <pre className="text-secondary cut-text">{project.description}</pre>
+        </div>
+      );
+    }
+    else
+    {
+      return(
+        <div className={"d-inline inactive"}>
+          <label className="h3">{project.name + " (inactive)"}</label>
+          <pre className="text-secondary cut-text">{project.description}</pre>
+        </div>
+      );
+    }
   }
 
   render() {

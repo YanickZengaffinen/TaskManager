@@ -23,7 +23,7 @@ export class TodosOverview extends Component {
         this.setState({
           ...this.state,
           isLoaded: true,
-          todos: result
+          todos: this.sortTodos(result)
         });
       },
       (error) => {
@@ -33,6 +33,15 @@ export class TodosOverview extends Component {
           error
         });
       });
+  }
+
+  sortTodos = (todos) =>
+  {
+    return todos.sort(
+      (a,b) => {
+        return a.title.localeCompare(b.title);
+      }
+    );
   }
 
   //creates a new todo
@@ -94,7 +103,8 @@ export class TodosOverview extends Component {
         <Container>
           <h1>Todos</h1>
           <DataOverview datas={todos} onCreate={this.onCreate} 
-              onEdit={this.onEdit} onDelete={this.onDelete} render={this.renderTodo}/>
+              onEdit={this.onEdit} onDelete={this.onDelete} onDataClicked={this.onEdit}
+              render={this.renderTodo}/>
         </Container>
       );
     }

@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Data.Todos
+﻿using System;
+
+namespace TaskManager.Data.Todos
 {
     public interface ITodo : IData
     {
@@ -8,6 +10,9 @@
         long? ProjectId { get; set; }
 
         string Title { get; set; }
+
         string Description { get; set; }
+
+        DateTime? DueDate { get; set; }
     }
 }

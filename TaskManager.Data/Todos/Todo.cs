@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Data.Todos
+﻿using System;
+
+namespace TaskManager.Data.Todos
 {
     //TODO: remove public modifier as external access should be forbidden
     public class Todo : ITodo
@@ -7,6 +9,8 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public long? ProjectId { get; set; }
+
+        public DateTime? DueDate { get; set; }
 
         public Todo(long id)
         {
@@ -19,7 +23,8 @@
             {
                 ProjectId = ProjectId,
                 Title = Title,
-                Description = Description
+                Description = Description,
+                DueDate = DueDate
             };
         }
     }

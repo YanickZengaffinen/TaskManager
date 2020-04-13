@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import { DataEdit } from '../api/DataEdit';
 import { getTodo, deleteTodo, updateTodo } from './TodoAPI';
+import { DateTime } from 'react-datetime-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import moment from 'moment'
 
 export class TodoEdit extends Component {
   displayName = TodoEdit.name
@@ -46,6 +50,11 @@ export class TodoEdit extends Component {
     this.setTodo({...this.state.todo, description: e.target.value});
   }
 
+  onDueDateChanged = (date) =>
+  {
+    this.setTodo({...this.state.todo, dueDate: date});
+  }
+
   setTodo(todo)
   {
     this.setState({
@@ -82,6 +91,23 @@ export class TodoEdit extends Component {
 
   renderTodo = (todo) =>
   {
+    let datetimePicker = {};
+    
+    if(todo.dueDate)
+    {
+      datetimePicker = (
+      <div className="form-inline">
+        <DateTime pickerOptions={{format:"DD.MM.YYYY"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
+        <DateTime pickerOptions={{format:"HH:mm"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
+        <FontAwesomeIcon className="ml-2" icon={faMinus} onClick={(e) => this.onDueDateChanged(null)} />
+      </div>);
+    }
+    else{
+      datetimePicker = (
+        <FontAwesomeIcon className="ml-2" icon={faPlus} onClick={(e) => this.onDueDateChanged(moment())}/>
+      );
+    }
+
     return(
     <Form>
       <Form.Group>
@@ -91,6 +117,10 @@ export class TodoEdit extends Component {
       <Form.Group>
         <Form.Label>Description</Form.Label>
         <Form.Control as="textarea" rows="3" defaultValue={todo.description} onChange={this.onDescriptionChanged} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Due Date</Form.Label>
+        {datetimePicker}
       </Form.Group>
     </Form>
     );
