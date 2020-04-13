@@ -3,6 +3,9 @@ import { Form } from 'react-bootstrap';
 import { DataEdit } from '../api/DataEdit';
 import { getTodo, deleteTodo, updateTodo } from './TodoAPI';
 import { DateTime } from 'react-datetime-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import moment from 'moment'
 
 export class TodoEdit extends Component {
   displayName = TodoEdit.name
@@ -88,6 +91,22 @@ export class TodoEdit extends Component {
 
   renderTodo = (todo) =>
   {
+    let datetimePicker = {};
+    
+    if(todo.dueDate)
+    {
+      datetimePicker = (
+      <div className="form-inline">
+        <DateTime pickerOptions={{format:"DD.MM.YYYY"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
+        <DateTime pickerOptions={{format:"HH:mm"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
+      </div>);
+    }
+    else{
+      datetimePicker = (
+        <FontAwesomeIcon className="ml-2" icon={faPlus} onClick={(e) => this.onDueDateChanged(moment())}/>
+      );
+    }
+
     return(
     <Form>
       <Form.Group>
@@ -100,11 +119,7 @@ export class TodoEdit extends Component {
       </Form.Group>
       <Form.Group>
         <Form.Label>Due Date</Form.Label>
-
-        <div className="form-inline">
-          <DateTime pickerOptions={{format:"DD.MM.YYYY"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
-          <DateTime pickerOptions={{format:"HH:mm"}} value={todo.dueDate} onChange={this.onDueDateChanged}/>
-        </div>
+        {datetimePicker}
       </Form.Group>
     </Form>
     );
